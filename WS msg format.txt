@@ -1,0 +1,43 @@
+Msg_to_CB = "{"message":
+                            {
+                            "ws_id":"Tensator_Websocket_server",
+                            "cb_id":"CB_123456789",
+                            "device_type": "Edgelit",
+                            "cmd":
+                                    {
+                                    "target":"7",
+                                    "cmd_info":
+                                                {
+                                                    "event": "Close",               //Close, Free, Busy
+                                                    "flash_speed": 1,               // 1=Slowest, 2=Slow, 3=Normal, 4=Fast, 5=Fastest
+                                                    "no_of_flashes": 5, 
+                                                    "on_color": [255, 0, 0],
+                                                    "off_color": [0, 0, 0],
+                                                    "free_color": [0, 255, 0],
+                                                    "busy_color": [255,165, 0]
+                                                } 
+                                    }
+                            }
+                }"
+
+Msg_from_CB = "{"message":
+                            {
+                            "ws_id":"Tensator_Websocket_server",
+                            "cb_id":"CB_123456789",
+                            "device_type": "Edgelit-button",
+                            "cmd":
+                                    {                                             
+                                        "type": "Button_Event"
+                                        "target":"7",
+                                        "event": "Close",               //Close, Free, Busy
+                                        "flash_speed": 1,               // 1=Slowest, 2=Slow, 3=Normal, 4=Fast, 5=Fastest
+                                        "no_of_flashes": 5, 
+                                        "on_color": [255, 0, 0],
+                                        "off_color": [0, 0, 0],
+                                        "free_color": [0, 255, 0],
+                                        "busy_color": [255,165, 0]                                             
+                                    }
+                            }
+                }"
+
+Msg_from_CB = "{"message":{"ws_id":"Tensator_Websocket_server","cb_id":"CB_123456789","device_type": "Edgelit-button","cmd":{"type": "Button_Event","target":"7","event": "Close","flash_speed": 1,"no_of_flashes": 5,"on_color": [255, 0, 0],"off_color": [0, 0, 0],"free_color": [0, 255, 0],"busy_color": [255,165, 0]}}}"

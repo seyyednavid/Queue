@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WebSocket Test</title>
+</head>
+<body>
+<input type="number" id="inputNumber" placeholder="Enter a number">
+<button onclick="sendMessage()">Send</button>
+
+<script>
+function sendMessage() {
+    var targetNumber = document.getElementById("inputNumber").value;
+    
+    var message = 
+    {
+        "ws_id": "Tensator_Websocket_server",
+        "cb_id": "CB_123456789",
+        "device_type": "Edgelit-button",
+        "cmd_info": 
+        {
+            "target": targetNumber,
+            "event": "Open", // Change event as needed
+            "flash_speed": 1,
+            "no_of_flashes": 5,
+            "on_color": [255, 0, 0],
+            "off_color": [0, 0, 0],
+            "free_color": [0, 255, 0],
+            "busy_color": [255, 165, 0]
+        }
+    };
+
+    // Convert message to JSON string
+    var jsonString = JSON.stringify(message);
+
+    // Connect to WebSocket server
+    var socket = new WebSocket("ws://127.0.0.1:8764");
+
+    // Send JSON message to server when WebSocket connection is open
+    socket.onopen = function(event) {
+        socket.send(jsonString);
+    };
+
+    // Log any errors that occur
+    socket.onerror = function(error) {
+        console.error("WebSocket Error:", error);
+    };
+
+    // Close the WebSocket connection after sending the message
+    socket.onmessage = function(event) {
+        console.log("Message received from server:", event.data);
+        socket.close();
+    };
+}
+</script>
+</body>
+</html>
