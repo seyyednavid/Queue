@@ -11,12 +11,15 @@ import websockets
 import json
 import threading
 import webbrowser
+import subprocess
+import pyautogui
+import time
 
 app = Flask(__name__, static_folder='static')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'  
 db = SQLAlchemy(app)
 
-# Variable to store number of cadhiers (0-23)
+# Variable to store number of cashiers (0-23)
 called_position = 0
 
 # Define the dictionary mapping keys to video filenames
@@ -152,7 +155,7 @@ def edgelit_save():
                 edgeled_settings['off_color'].append(data_in_db.off_color)
                 edgeled_settings['free_color'].append(data_in_db.free_color)
                 edgeled_settings['busy_color'].append(data_in_db.busy_color)
-
+        # Get the whole info from db and show them into Server_page.html page
         return render_template("Server_page.html", edgeled_settings=edgeled_settings)
     elif request.method == "POST":
         form_data = request.form
@@ -191,9 +194,11 @@ def call_forward():
 def open_browser():
     # Open the default web browser with the home page
     webbrowser.open('http://127.0.0.1:8888/callforward')
-
-
-
+    time.sleep(2)
+    # Simulate pressing the F11 key to enter fullscreen mode
+    pyautogui.press('f11')
+    
+    
 # Main code
 if __name__ == "__main__":
     with app.app_context():

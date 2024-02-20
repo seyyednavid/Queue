@@ -3,16 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
     <title>Video Player</title>
   </head>
-
-    <video
-      id="videoPlayer"
-      width="640"
-      autoplay
-      onended="playBackground()"
-    >
+  <body>
+    <video id="videoPlayer" autoplay onended="playBackground()">
       <source
         src="{{ url_for('static',  filename= 'videos/' + video_files['background'])}}"
         type="video/mp4"
@@ -21,76 +20,73 @@
     </video>
 
     <script>
-      var video_files = {{ video_files | tojson }};
-          var videoPlayer = document.getElementById("videoPlayer");
-          var backgroundVideo ="{{ url_for('static', filename= 'videos/' + video_files['background']) }}";
-          var currentVideo = backgroundVideo;
-          var websocket;
-          var backgroundVideoTime = 0; // Variable to track the current time of the background video
+      var websocket;
 
+      var video_files = {{ video_files | tojson | safe }};
+      var videoPlayer = document.getElementById("videoPlayer");
+      var backgroundVideo =
+        "{{ url_for('static', filename= 'videos/' + video_files['background']) }}";
+      var currentVideo = backgroundVideo;
+      var backgroundVideoTime = 0; // Variable to track the current time of the background video
 
-          function playBackground() {
-           videoPlayer.src = backgroundVideo;
-           videoPlayer.currentTime = backgroundVideoTime; // Set current time to the stored value
-           videoPlayer.play();
+      function playBackground() {
+        videoPlayer.src = backgroundVideo;
+        videoPlayer.currentTime = backgroundVideoTime; // Set current time to the stored value
+        videoPlayer.play();
+        backgroundVideoTime = 0;
+      }
+
+      function playVideo(position) {
+        // Pause the background video
+        videoPlayer.pause();
+        if (videoPlayer.src.endsWith(video_files["background"])) {
+          backgroundVideoTime = videoPlayer.currentTime;
         }
 
-          function playVideo(position) {
-            // Pause the background video
-            videoPlayer.pause();
-            // Play the corresponding video based on the called_position
-            var filename = video_files[position];
-            if (filename) {
-              // Save the current time of the background video
-               backgroundVideoTime = videoPlayer.currentTime;
-              // Set the source of the video player to the relative video
-              videoPlayer.src = "{{ url_for('static', filename='videos/') }}" + filename;
-              videoPlayer.load();
-              videoPlayer.play();
-              // Add event listener for when the relative video ends
-              videoPlayer.onended = function () {
-                // After the relative video finishes playing, resume the background video
-                playBackground();
-                backgroundVideoTime = 0;
-              };
-            }
-          }
+        var filename = video_files[position];
+        if (filename) {
+          // Set the source of the video player to the relative video
+          videoPlayer.src =
+            "{{ url_for('static', filename='videos/') }}" + filename;
+          videoPlayer.load();
+          videoPlayer.play();
+        }
+      }
 
-          function initWebSocket() {
-            // Establish WebSocket connection
-            websocket = new WebSocket("ws://127.0.0.1:8764");
-            websocket.onmessage = function (event) {
-              var message = JSON.parse(event.data);
-              if (message.ws_id == "Tensator_Websocket_server") {
-                if (message.cb_id == "CB_123456789") {
-                  if (message.device_type == "Edgelit-button") {
-                    var cf_event = message.cmd_info.event;
-                    if (cf_event == "Close") {
-                      //No action here yet
-                    } else if (cf_event == "Open") {
-                      var called_position = message.cmd_info.target;
-                    //   calledPositionElement.textContent = called_position;
-                      playVideo(called_position);
-                    } else if (cf_event == "Busy") {
-                      //No action here yet
-                    }
-                  }
+      function initWebSocket() {
+        // Establish WebSocket connection
+        websocket = new WebSocket("ws://127.0.0.1:8764");
+        websocket.onmessage = function (event) {
+          var message = JSON.parse(event.data);
+          if (message.ws_id == "Tensator_Websocket_server") {
+            if (message.cb_id == "CB_123456789") {
+              if (message.device_type == "Edgelit-button") {
+                var cf_event = message.cmd_info.event;
+                if (cf_event == "Close") {
+                  //No action here yet
+                } else if (cf_event == "Open") {
+                  var called_position = message.cmd_info.target;
+                  //   calledPositionElement.textContent = called_position;
+                  playVideo(called_position);
+                } else if (cf_event == "Busy") {
+                  //No action here yet
                 }
               }
-            };
-            websocket.onclose = function (event) {
-              // Handle WebSocket closed
-              console.log("WebSocket closed");
-            };
-            websocket.onerror = function (event) {
-              // Handle WebSocket error
-              console.error("WebSocket error:", event);
-            };
+            }
           }
+        };
+        websocket.onclose = function (event) {
+          // Handle WebSocket closed
+          console.log("WebSocket closed");
+        };
+        websocket.onerror = function (event) {
+          // Handle WebSocket error
+          console.error("WebSocket error:", event);
+        };
+      }
 
-          // Initialize WebSocket connection
-          initWebSocket();
+      // Initialize WebSocket connection
+      initWebSocket();
     </script>
   </body>
 </html>
-

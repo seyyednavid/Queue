@@ -4,11 +4,201 @@ html {
   padding: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden; 
+  /* overflow: hidden; */
+  background-color: #343a40;
+  color: white;
 }
-
 #videoPlayer {
   width: 100%;
   height: 100%;
-  object-fit: cover; 
+  object-fit: cover;
+}
+
+/* Main page */
+.main-paragraph {
+  font-size: 3rem;
+  margin: 5rem;
+  text-align: center;
+}
+.btn-container {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+.btn {
+  font-weight: 600;
+  transition: all 300ms ease;
+  padding: 1rem;
+  width: 8rem;
+  border-radius: 2rem;
+}
+.btn-color-1 {
+  position: relative;
+  margin: auto;
+  padding: 10px 12px;
+  transition: all 0.2s ease;
+  border: none;
+  background: none;
+}
+.btn-color-1:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  border-radius: 50px;
+  background: #c9ce23;
+  width: 50px;
+  height: 50px;
+  transition: all 0.3s ease;
+}
+.btn-color-1 span {
+  position: relative;
+  font-family: "Ubuntu", sans-serif;
+  font-size: 25px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: white;
+}
+.btn-color-1 svg {
+  position: relative;
+  top: 0;
+  margin-left: 10px;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke: white;
+  stroke-width: 4;
+  transform: translateX(-5px);
+  transition: all 0.3s ease;
+}
+.btn-color-1:hover:before {
+  width: 100%;
+  background: #c9ce23;
+  color: black;
+}
+.btn-color-1:hover svg {
+  transform: translateX(0);
+}
+.btn-color-1:active {
+  transform: scale(0.95);
+}
+
+/* Setting page */
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 3rem;
+}
+
+form ol {
+  counter-reset: item; 
+  display: flex;
+  flex-direction: column;
+  font-size: 1.25rem;
+  padding: 0;
+}
+
+form li {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  border: 3px solid white;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  padding: 20px;
+}
+
+form li::before {
+  content: counter(item) " -";
+  counter-increment: item;
+  margin-right: 5px;
+  font-weight: bold;
+  color: #c9ce23;
+  padding-right: 10px;
+}
+
+form input,
+form select {
+  margin-right: 22px;
+}
+
+form select {
+  height: 27px;
+}
+
+form button {
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  padding: 12px 20px;
+  font-size: 18px;
+  margin-bottom: 2rem;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+form button:hover {
+  background-color: #45a049;
+}
+
+.adjust-paragraph {
+  color: white;
+  text-align: center;
+  font-size: 2rem;
+  margin: 5rem 1rem 0 1rem;
+}
+
+
+/* Mobile styles */
+@media screen and (max-width: 1330px) {
+  /* Setting page */
+  form li {
+    gap: 1.5rem 0.25rem;
+  }
+  .adjust-paragraph {
+    font-size: 1.5rem;
+  }
+}
+
+
+/* Tablet styles */
+@media screen and (max-width: 768px) {
+  /* Main page */
+  .main-paragraph {
+    font-size: 2rem;
+  }
+  .btn-color-1 span {
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .btn-color-1 {
+    padding: 13px 10px;
+  }
+  .btn-color-1:before {
+    width: 45px;
+    height: 45px;
+  }
+}
+
+
+/* Mobile styles */
+@media screen and (max-width: 540px) {
+  /* Setting page */
+  form li {
+    display: flex;
+    flex-direction: column;
+  }
+  form ol {
+    font-size: 1rem;
+  }
+  form input,
+  form select {
+    margin-right: 0px;
+  }
+  form li {
+    gap: 1rem 0.25rem;
+  }
 }

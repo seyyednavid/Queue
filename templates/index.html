@@ -1,12 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Main</title>
-</head>
-<body>
-    <p>This is the main page</p>
-    <a href="{{url_for('edgelit_save')}}">Go to settings page</a>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+    <title>Main Page</title>
+    <style>
+      body {
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <p class="main-paragraph">Welcome to the Main Page</p>
+    <!-- <a class="main-link" href="{{url_for('edgelit_save')}}">Go to the Settings Page</button> -->
+      <div class="btn-container"  id="settingsButton">
+        <button class="btn-color-1" href="{{url_for('edgelit_save')}}">
+          <span> Go to the Settings Page</span>
+          <svg viewBox="0 0 13 10" height="10px" width="15px">
+            <path d="M1,5 L11,5"></path>
+            <polyline points="8 1 12 5 8 9"></polyline>
+          </svg>
+        </button>
+      </div>
+
+
+      <script>
+        document.getElementById("settingsButton").onclick = function() {
+            window.location.href = "{{url_for('edgelit_save')}}";
+        };
+    </script>
+  </body>
 </html>
